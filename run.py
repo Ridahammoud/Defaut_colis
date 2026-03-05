@@ -104,14 +104,36 @@ with tab1:
     top_equipments = set(weekly_top10_global[equipment_col].tolist())
     w = weekly_counts[weekly_counts[equipment_col].isin(top_equipments)]
 
+#    fig = px.bar(
+#        w.sort_values("week"),
+#        x="week",
+#        y="defauts",
+#        color=equipment_col,
+#        barmode="group",
+#        title="Défauts par semaine (Top 10 global)"
+#    )
+#    st.plotly_chart(fig, use_container_width=True)
     fig = px.bar(
         w.sort_values("week"),
         x="week",
         y="defauts",
         color=equipment_col,
         barmode="group",
-        title="Défauts par semaine (Top 10 global)"
+        title="Défauts par semaine (Top 10 global)",
+        text="defauts",
+        custom_data=[equipment_col]
     )
+
+    fig.update_traces(
+        texttemplate="%{y}<br>%{customdata[0]}",
+        textposition="outside"
+    )
+
+    fig.update_layout(
+        uniformtext_minsize=8,
+        uniformtext_mode="hide"
+    )
+
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
